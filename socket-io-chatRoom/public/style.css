@@ -1,0 +1,77 @@
+header{
+    width: 1200px;
+    margin: auto;
+    text-align: center
+}
+
+section {
+    width: 900px;
+    height: 500px;
+    background: #d5efc1;
+    margin: auto;
+    overflow-y: auto;
+}
+
+.other{
+    text-align: left;
+    height: 50px;
+}
+
+.myself{
+    text-align: right;
+    height: 50px;
+}
+
+.enterOrLeave {
+    text-align: center;
+    height: 50px;
+}
+
+footer{
+    width: 900px;
+    margin: auto
+}
+
+.inputDiv{
+    float: right
+}
+
+/* 昵称填写框 */
+#usernameWrap{
+    position: absolute;
+    background-color: #4a4949ad;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.tip{
+    height: 15%;
+    text-align: center;
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+.username{
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: #ec7445;
+    border: 1px solid lightgreen;
+    padding: 10px;
+}
+
+.form{
+    width: 100%;
+    margin:auto;
+    display: flex;
+    justify-content: center
+}

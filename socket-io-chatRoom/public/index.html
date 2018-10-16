@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ch">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>socketIO聊天室</title>
+    <link rel="stylesheet" href="./style.css">
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>欢迎来到随意嗨聊天室</h1>
+    </header>
+    <section id="chatRecordWrap">
+        <div id="chatRecord"></div>
+    </section>
+    <footer>
+        <div class="inputDiv"><input type="text" id="msgTxt" /><button id="sendBtn">发送消息</button></div>
+    </footer>
+    <div id="usernameWrap">
+        <div class="username">
+            <p class="tip">请给您自己起一个骚气的名字！</p>
+            <div class="form">
+                <label for="username">昵称</label>
+                <input type="text" id="username">
+                <button id="confirm">确定</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    var socket = io("ws://192.168.32.9:3001")
+    let nickName = null
+    socket.on("enter", (data) => {
+        console.log(data)
+        document.getElementById("usernameWrap").style.display = "none"
+        showMessage(data, "enter")
+    })
+    socket.on("message", (data) => {
+        showMessage(data, "message")
+    })
+    socket.on("leave", (data) => {
+        showMessage(data, "leave")
+    })
+
+    function showMessage(data, type) {
+        let recordDiv = document.getElementById("chatRecord")
+        // let msgDiv = document.createElement("div")
+        let msgDiv = null
+        let message = null
+        if (typeof data === "object") {
+            msgDiv = createRecord(data)
+            message = data.message
+        } else {
+            msgDiv = document.createElement("div")
+            msgDiv.className = "enterOrLeave"
+            message = data
+        }
+        msgDiv.innerHTML = message
+
+        switch (type) {
+            case "enter":
+                msgDiv.style.color = "green"
+                break
+            case "message":
+                msgDiv.style.color = "orange"
+                break
+            case "leave":
+                msgDiv.style.color = "red"
+                break
+        }
+
+        recordDiv.appendChild(msgDiv)
+        let height = recordDiv.offsetHeight
+        document.getElementById("chatRecordWrap").scrollTop = height
+    }
+
+    function createRecord(data) {
+        let msgDivWrap = document.createElement("div")
+        let userDiv = document.createElement("div")
+        let msgDiv = document.createElement("div")
+        msgDivWrap.appendChild(userDiv)
+        msgDivWrap.appendChild(msgDiv)
+        if (data.user === nickName) {
+            msgDivWrap.className = "myself"
+        } else {
+            msgDivWrap.className = "other"
+        }
+
+        return msgDivWrap
+    }
+
+    function confirm() {
+        nickName = document.getElementById("username").value
+        if (nickName) {
+            socket.emit("registName", nickName)
+        }
+
+    }
+
+    function sendMsg() {
+        let txt = document.getElementById("msgTxt").value
+        if (txt) {
+            socket.emit("message", txt)
+            document.getElementById("msgTxt").value = ''
+        }
+    }
+
+    function keyDownHandle(e) {
+        let event = e || window.event
+        let keyCode = e.keyCode
+
+        if (keyCode === 13) {//回车键
+            if (document.getElementById("usernameWrap").style.display === "none") {
+                sendMsg()
+            } else {
+                confirm()
+            }
+        }
+    }
+
+    document.onkeydown = keyDownHandle
+    document.getElementById("confirm").onclick = confirm
+    document.getElementById("sendBtn").onclick = sendMsg
+
+</script>
+
+</html>

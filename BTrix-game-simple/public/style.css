@@ -1,0 +1,93 @@
+.main {
+    width: 900px;
+    height: 600px;
+    margin: 0 auto;
+    background-color: #cfcfcf;
+    position: relative;
+}
+
+.local_gameView {
+    width: 500px;
+    height: 600px;
+    margin: 10px auto;
+}
+
+.wrap {
+    margin: auto;
+    width: 80%;
+    height: 100%;
+    position: relative;
+}
+
+.local_gameView .title {
+    font-size: 30px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.local_gameView .game {
+    width: 200px;
+    height: 400px;
+    position: absolute;
+    top: 10px;
+    background-color: #c8c9f1;
+    border: 1px solid blue;
+    border-top: transparent
+}
+
+.local_gameView .next {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top:10px;
+    left:250px;
+    background-color: #c8c9f1;
+    border: 1px solid blue;
+}
+
+.local_gameView .info {
+    position: absolute;
+    top:100px;
+    left:250px;
+}
+
+.remote_gameView {
+    position: absolute;
+    width: 250px;
+    height: 300px;
+    right: 0;
+    bottom: 0;
+}
+
+.remote_gameView .title {
+    font-size: 15px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.remote_gameView .game {
+    width: 100px;
+    height: 200px;
+    position: absolute;
+    top: 10px;
+    background-color: #c8c9f1;
+    border: 1px solid blue;
+    border-top: transparent
+}
+
+.remote_gameView .next {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 125px;
+    top: 10px;
+    background-color: #c8c9f1;
+    border: 1px solid blue;
+}
+
+.remote_gameView .info {
+    position: absolute;
+    left: 125px;
+    top: 60px;
+    font-size: 12px;
+}
