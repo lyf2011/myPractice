@@ -32,7 +32,7 @@
     top: 10px;
     background-color: #c8c9f1;
     border: 1px solid blue;
-    border-top: transparent
+    border-top: transparent;
 }
 
 .local_gameView .next {
@@ -90,4 +90,29 @@
     left: 125px;
     top: 60px;
     font-size: 12px;
+}
+
+/* 游戏框内 有三种状态的方块
+  .none表示没有方块  
+  .current表示当前操作方块
+  .fixed表示已经固定的方块
+  */
+.none .current .fixed {
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+}
+
+.none {
+    background-color: transparent;
+}
+
+.current {
+    background-color: pink;
+    border: 1px solid red;
+}
+
+.fixed {
+    background-color: gray;
+    border: 1px solid black;
 }
