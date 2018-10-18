@@ -97,10 +97,11 @@
   .current表示当前操作方块
   .fixed表示已经固定的方块
   */
-.none .current .fixed {
+.none, .current, .fixed {
     width: 20px;
     height: 20px;
     box-sizing: border-box;
+    position: absolute;
 }
 
 .none {

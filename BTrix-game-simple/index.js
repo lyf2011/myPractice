@@ -13,4 +13,4 @@ io.on("connection", (socket)=>{
     
 })
 
-consoe.log("server is listening on " + PORT)
+console.log("server is listening on " + PORT)
