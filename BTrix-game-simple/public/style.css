@@ -97,9 +97,16 @@
   .current表示当前操作方块
   .fixed表示已经固定的方块
   */
-.none, .current, .fixed {
+.local_gameView .none, .local_gameView .current, .local_gameView .fixed {
     width: 20px;
     height: 20px;
+    box-sizing: border-box;
+    position: absolute;
+}
+
+.remote_gameView .none, .remote_gameView .current, .remote_gameView .fixed {
+    width: 10px;
+    height: 10px;
     box-sizing: border-box;
     position: absolute;
 }
