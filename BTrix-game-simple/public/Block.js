@@ -9,37 +9,12 @@ const OPERATETYPE = {
     RIGHT:4
 }
 
-const SHAPES = [
-    [
-        [0, 0, 2, 2],
-        [0, 2, 2, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
-    ],
-    [
-        [0, 2, 0, 0],
-        [2, 2, 0, 0],
-        [2, 0, 0, 0],
-        [0, 0, 0, 0]
-    ],
-    [
-        [2, 2, 0, 0],
-        [0, 2, 2, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
-    ],
-    [
-        [0, 2, 0, 0],
-        [2, 2, 0, 0],
-        [2, 0, 0, 0],
-        [0, 0, 0, 0]
-    ]
-]
-
 export default class Block {
     constructor() {
         this.dir = 0
-        this.data = SHAPES[this.dir]
+        
+        
+        this.data = this.shapes[this.dir]
 
         this.origin = {
             row: 0,
@@ -85,7 +60,7 @@ export default class Block {
 
     rotate() {
         this.dir = (this.dir + 1) % 4
-        this.data = SHAPES[this.dir]
+        this.data = this.shapes[this.dir]
     }
 }
 
@@ -102,7 +77,7 @@ function canOperate(check_target, curBlock, operateType) {
 
     if (operateType === OPERATETYPE.ROTATE) {
         let dir = (curBlock.dir + 1) % 4
-        tempBlockData =  SHAPES[dir]
+        tempBlockData =  curBlock.shapes[dir]
     } else if(operateType === OPERATETYPE.DOWN) {
         nextOriginRow = curBlock.origin.row + 1
     } else if(operateType === OPERATETYPE.LEFT) {
