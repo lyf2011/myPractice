@@ -15,16 +15,16 @@ export default class Local {
 
 function bindKeyEvent(bind_Target) {
     document.onkeydown = (e)=>{
-        if (e.keyCode === 32) { //空格
-            
-        } else if (e.keyCode === 37) { //左
-            
-        } else if (e.keyCode === 38) { //上
-            
-        } else if (e.keyCode === 39) { //右
-            
-        } else if (e.keyCode === 40) { //下
+        if (e.keyCode === 32) { //空格  直接到底
             bind_Target.drop()
+        } else if (e.keyCode === 37) { //左
+            bind_Target.left()
+        } else if (e.keyCode === 38) { //上
+            bind_Target.rotate()
+        } else if (e.keyCode === 39) { //右
+            bind_Target.right()
+        } else if (e.keyCode === 40) { //下
+            bind_Target.down()
         } 
     }
 }

@@ -57,11 +57,47 @@ export default class Game {
         }
     }
 
+    down() {
+        if (this.currentBlock.canDown(this.gameData)) {
+            clearData(this.gameData, this.currentBlock)
+            this.currentBlock.down()
+            copyData(this.gameData, this.currentBlock)
+            this.refreshDivs(this.gameDivs, this.gameData)
+            return true
+        } else {
+            return false
+        }
+    }
+
+    left() {
+        if (this.currentBlock.canLeft(this.gameData)) {
+            clearData(this.gameData, this.currentBlock)
+            this.currentBlock.left()
+            copyData(this.gameData, this.currentBlock)
+            this.refreshDivs(this.gameDivs, this.gameData)
+        }
+    }
+
+    right() {
+        if (this.currentBlock.canRight(this.gameData)) {
+            clearData(this.gameData, this.currentBlock)
+            this.currentBlock.right()
+            copyData(this.gameData, this.currentBlock)
+            this.refreshDivs(this.gameDivs, this.gameData)
+        }
+    }
+
+    rotate() {
+        if (this.currentBlock.canRotate(this.gameData)) {
+            clearData(this.gameData, this.currentBlock)
+            this.currentBlock.rotate()
+            copyData(this.gameData, this.currentBlock)
+            this.refreshDivs(this.gameDivs, this.gameData)
+        }
+    }
+
     drop() {
-        clearData(this.gameData, this.currentBlock)
-        this.currentBlock.origin.row += 1
-        copyData(this.gameData, this.currentBlock)
-        this.refreshDivs(this.gameDivs, this.gameData)
+        while(this.down()) {}
     }
 }
 
@@ -99,10 +135,10 @@ function initDivs(containerID,row, column, cellWidth) {
 function copyData(target_data, source) {
     for (var i = 0; i < source.data.length; i++) {
         for (var j = 0; j < source.data[0].length; j++) {
-            let nextRow = i + source.origin.row
-            let nextColumn = j + source.origin.column
-            if (checkValid(target_data, nextRow, nextColumn)) {
-                target_data[nextRow][nextColumn] = source.data[i][j]
+            let checkPointRow = i + source.origin.row
+            let checkPointColumn = j + source.origin.column
+            if (checkPointValid(target_data, checkPointRow, checkPointColumn)) {
+                target_data[checkPointRow][checkPointColumn] = source.data[i][j]
             }
         }
     }
@@ -111,25 +147,26 @@ function copyData(target_data, source) {
 function clearData(target_data, source) {
     for (var i = 0; i < source.data.length; i++) {
         for (var j = 0; j < source.data[0].length; j++) {
-            let nextRow = i + source.origin.row
-            let nextColumn = j + source.origin.column
-            if (checkValid(target_data, nextRow, nextColumn)) {
-                target_data[nextRow][nextColumn] = 0
+            let checkPointRow = i + source.origin.row
+            let checkPointColumn = j + source.origin.column
+            if (checkPointValid(target_data, checkPointRow, checkPointColumn)) {
+                target_data[checkPointRow][checkPointColumn] = 0
             }
         }
     }
 }
 
-function checkValid(check_obj, nextRow, nextColumn) {
-    if (nextRow < 0) {
+//检测某一个点是否合法
+function checkPointValid(gameData, checkPointRow, checkPointColumn) {
+    if (checkPointRow < 0) {
         return false
-    } else if (nextRow >= GAME_ROW) {
+    } else if (checkPointRow >= gameData.length) {
         return false
-    } else if (nextColumn < 0) {
+    } else if (checkPointColumn < 0) {
         return false
-    } else if (nextColumn >= GAME_COLUMN) {
+    } else if (checkPointColumn >= gameData[0].length) {
         return false
-    } else if (check_obj[nextRow][nextColumn]  === 1) { //如果下一个位置已经有fixed的方块了
+    } else if (gameData[checkPointRow][checkPointColumn]  === 1) { //如果下一个位置已经有fixed的方块了
         return false
     } else {
         return true
