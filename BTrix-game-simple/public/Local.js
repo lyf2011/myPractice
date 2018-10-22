@@ -1,15 +1,23 @@
 import Game from './Game.js'
 
+const INTERVAL = 300  //下落时间间隔
+
 export default class Local {
     constructor() {
         this.local_game = new Game("local_gameDiv", "local_nextDiv", 20)
         this.remote_game = new Game("remote_gameDiv", "remote_nextDiv", 10)
+        this.timer = null
     }
 
     start() {
         this.local_game.initGame()
         this.remote_game.initGame()
         bindKeyEvent(this.local_game)
+        this.timer = setInterval(()=>{
+            if (!this.local_game.down()) {
+                this.local_game.fixed()
+            }
+        }, INTERVAL)
     }
 }
 

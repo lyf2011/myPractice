@@ -1,4 +1,4 @@
-import Block from './Block.js'
+import BlockFactory from './BlockFactory.js'
 
 // 游戏区和next区域的行数和列数
 const GAME_ROW = 20
@@ -33,11 +33,11 @@ export default class Game {
         this.gameDivs = initDivs(this.gameAreaID, GAME_ROW, GAME_COLUMN, this.cellWidth)
         this.nextDivs = initDivs(this.nextAreaID, NEXT_ROW, NEXT_COLUMN, this.cellWidth)
 
-        this.currentBlock = new Block()
-        this.nextBlock = new Block()
+        this.currentBlock = new BlockFactory(3, 2)
+        this.nextBlock = new BlockFactory(1, 1)
 
         copyData(this.gameData, this.currentBlock)
-        copyData(this.nextData, this.currentBlock)
+        copyData(this.nextData, this.nextBlock)
 
         this.refreshDivs(this.gameDivs, this.gameData)
         this.refreshDivs(this.nextDivs, this.nextData)
@@ -98,6 +98,10 @@ export default class Game {
 
     drop() {
         while(this.down()) {}
+    }
+
+    fixed() {
+        
     }
 }
 

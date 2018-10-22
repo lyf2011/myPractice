@@ -13,9 +13,6 @@ export default class Block {
     constructor() {
         this.dir = 0
         
-        
-        this.data = this.shapes[this.dir]
-
         this.origin = {
             row: 0,
             column: 0
