@@ -34,6 +34,7 @@ export default class Game {
         this.nextDivs = initDivs(this.nextAreaID, NEXT_ROW, NEXT_COLUMN, this.cellWidth)
 
         this.currentBlock = new BlockFactory(3, 2)
+        this.currentBlock.origin.column = 3
         this.nextBlock = new BlockFactory(1, 1)
 
         copyData(this.gameData, this.currentBlock)
@@ -101,7 +102,19 @@ export default class Game {
     }
 
     fixed() {
-        
+        setData(this.gameData, this.currentBlock, 1)
+        this.refreshDivs(this.gameDivs, this.gameData)
+    }
+
+    doNext(randomType, randomDir) {
+        this.nextBlock.origin.column = 3
+        this.currentBlock = this.nextBlock
+        this.nextBlock = new BlockFactory(randomType, randomDir)
+        copyData(this.gameData, this.currentBlock)
+        copyData(this.nextData, this.nextBlock)
+
+        this.refreshDivs(this.gameDivs, this.gameData)
+        this.refreshDivs(this.nextDivs, this.nextData)
     }
 }
 
@@ -137,27 +150,29 @@ function initDivs(containerID,row, column, cellWidth) {
 }
 
 function copyData(target_data, source) {
-    for (var i = 0; i < source.data.length; i++) {
-        for (var j = 0; j < source.data[0].length; j++) {
-            let checkPointRow = i + source.origin.row
-            let checkPointColumn = j + source.origin.column
-            if (checkPointValid(target_data, checkPointRow, checkPointColumn)) {
-                target_data[checkPointRow][checkPointColumn] = source.data[i][j]
-            }
-        }
-    }
+    // for (var i = 0; i < source.data.length; i++) {
+    //     for (var j = 0; j < source.data[0].length; j++) {
+    //         let checkPointRow = i + source.origin.row
+    //         let checkPointColumn = j + source.origin.column
+    //         if (checkPointValid(target_data, checkPointRow, checkPointColumn)) {
+    //             target_data[checkPointRow][checkPointColumn] = source.data[i][j]
+    //         }
+    //     }
+    // }
+    setData(target_data, source, 2)
 }
 
 function clearData(target_data, source) {
-    for (var i = 0; i < source.data.length; i++) {
-        for (var j = 0; j < source.data[0].length; j++) {
-            let checkPointRow = i + source.origin.row
-            let checkPointColumn = j + source.origin.column
-            if (checkPointValid(target_data, checkPointRow, checkPointColumn)) {
-                target_data[checkPointRow][checkPointColumn] = 0
-            }
-        }
-    }
+    // for (var i = 0; i < source.data.length; i++) {
+    //     for (var j = 0; j < source.data[0].length; j++) {
+    //         let checkPointRow = i + source.origin.row
+    //         let checkPointColumn = j + source.origin.column
+    //         if (checkPointValid(target_data, checkPointRow, checkPointColumn)) {
+    //             target_data[checkPointRow][checkPointColumn] = 0
+    //         }
+    //     }
+    // }
+    setData(target_data, source, 0)
 }
 
 //检测某一个点是否合法
@@ -174,5 +189,25 @@ function checkPointValid(gameData, checkPointRow, checkPointColumn) {
         return false
     } else {
         return true
+    }
+}
+
+function setData(target_data, source, value) {
+    for (var i = 0; i < source.data.length; i++) {
+        for (var j = 0; j < source.data[0].length; j++) {
+            let checkPointRow = i + source.origin.row
+            let checkPointColumn = j + source.origin.column
+            if (checkPointValid(target_data, checkPointRow, checkPointColumn)) {
+                if (value === 1) {//要将gamedata中的值设为1，也就是要做fixed
+                    if (target_data[checkPointRow][checkPointColumn] === 2) {
+                        target_data[checkPointRow][checkPointColumn] = 1
+                    }
+                } else if(value === 2) {//要将gamedata中的值设为2，也就是要做移动(则不做判断，将cur中的值全部拷贝)
+                    target_data[checkPointRow][checkPointColumn] = source.data[i][j]
+                } else if(value === 0) {//要将gamedata中的值设为0，也就是要做清空上一位置的数据
+                    target_data[checkPointRow][checkPointColumn] = 0
+                }
+            }
+        }
     }
 }

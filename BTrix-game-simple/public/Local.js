@@ -16,9 +16,18 @@ export default class Local {
         this.timer = setInterval(()=>{
             if (!this.local_game.down()) {
                 this.local_game.fixed()
+                this.local_game.doNext(generateType(), generateDir())
             }
         }, INTERVAL)
     }
+}
+
+function generateType() {
+    return Math.floor(Math.random() * 7 )
+}
+
+function generateDir() {
+    return Math.floor(Math.random() * 4 )
 }
 
 function bindKeyEvent(bind_Target) {
