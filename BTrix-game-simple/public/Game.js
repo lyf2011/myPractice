@@ -27,18 +27,13 @@ export default class Game {
         this.nextBlock = null
     }
 
-    initGame() {
+    initGame(randomType, randomDir) {
         this.gameData = initData(GAME_ROW, GAME_COLUMN)
         this.nextData = initData(NEXT_ROW, NEXT_COLUMN)
         this.gameDivs = initDivs(this.gameAreaID, GAME_ROW, GAME_COLUMN, this.cellWidth)
         this.nextDivs = initDivs(this.nextAreaID, NEXT_ROW, NEXT_COLUMN, this.cellWidth)
 
-        this.currentBlock = new BlockFactory(3, 2)
-        this.currentBlock.origin.column = 3
-        this.nextBlock = new BlockFactory(1, 1)
-
-        copyData(this.gameData, this.currentBlock)
-        copyData(this.nextData, this.nextBlock)
+        this.nextBlock = new BlockFactory(randomType, randomDir)
 
         this.refreshDivs(this.gameDivs, this.gameData)
         this.refreshDivs(this.nextDivs, this.nextData)
@@ -104,6 +99,36 @@ export default class Game {
     fixed() {
         setData(this.gameData, this.currentBlock, 1)
         this.refreshDivs(this.gameDivs, this.gameData)
+    }
+
+    clearLines() {
+        let hasLine = true
+        while(hasLine) {
+            let row = this.gameData.findIndex((line)=>{
+                return !line.includes(0)    //寻找某一行中不包含0的，也就是全是1或者2的行
+            })
+            if (row === -1) { //所有的行中  没有一行符合以上条件 也就是不用消行  结束此方法
+                hasLine = false
+                this.refreshDivs(this.gameDivs, this.gameData)
+                return
+            } else {
+                this.gameData.splice(row, 1) //删除该行数据
+                this.gameData.unshift(Array(GAME_COLUMN).fill(0)) //将数据最前边添加一行0
+            }
+        }
+    }
+
+    //判断游戏结束的条件就是  只检查  第二行的中间几个位置是否有值就行
+    //因为  下一个方块是从编号为 3 4 5 6 四个位置开始的 且每个图形第二行都有值
+    //所以  第二行的3 4 5 6 位置有值的话，就会使得下一个图形不能正常摆放，遂  游戏结束
+    checkGameOver() {
+        var gameOver = false
+        for (var column = 3; column < 7; column++) {
+            if (this.gameData[1][column] === 1) {
+                gameOver = true
+            }
+        }
+        return gameOver
     }
 
     doNext(randomType, randomDir) {

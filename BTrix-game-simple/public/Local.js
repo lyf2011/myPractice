@@ -10,15 +10,27 @@ export default class Local {
     }
 
     start() {
-        this.local_game.initGame()
-        this.remote_game.initGame()
+        this.local_game.initGame(generateType(), generateDir())
+        this.remote_game.initGame(generateType(), generateDir())
+        this.local_game.doNext(generateType(), generateDir())
         bindKeyEvent(this.local_game)
         this.timer = setInterval(()=>{
             if (!this.local_game.down()) {
                 this.local_game.fixed()
-                this.local_game.doNext(generateType(), generateDir())
+                this.local_game.clearLines()
+                if (this.local_game.checkGameOver()) {
+                    this.stop()
+                } else {
+                    this.local_game.doNext(generateType(), generateDir())
+                }
             }
         }, INTERVAL)
+    }
+
+    stop() {
+        clearInterval(this.timer)
+        alert("游戏结束")
+        document.onkeydown = null
     }
 }
 
