@@ -124,3 +124,27 @@
     background-color: gray;
     border: 1px solid black;
 }
+
+.result {
+    width: 40%;
+    /* height: 20%; */
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    margin-left: -80px;
+    background-color: black;
+    border-radius: 15px;
+    box-shadow: 4px 4px 4px 0px #4c6348;
+    display: none;
+    text-align: center;
+    font-size: 16px;
+    color: #ffffff;
+    font-family: fantasy;
+    padding-top: 10px;
+    box-sizing: border-box;
+}
+
+#result_text {
+    margin: 25px 0;
+    font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+}
