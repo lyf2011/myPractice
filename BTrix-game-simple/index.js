@@ -32,6 +32,7 @@ io.on("connection", (socket)=>{
     bindCommandListener(socket, "fixed")
     bindCommandListener(socket, "clearLines")
     bindCommandListener(socket, "addBottomLines")
+    bindCommandListener(socket, "gameOver")
 
     socket.on("disconnect", ()=>{
 

@@ -30,7 +30,7 @@ export default class Game {
 
         this.score = 0
         this.usedTime = 0
-        this.isStop = true
+        this.gameOver = false
     }
 
     initGame(randomType, randomDir) {
@@ -153,13 +153,12 @@ export default class Game {
     //因为  下一个方块是从编号为 3 4 5 6 四个位置开始的 且每个图形第二行都有值
     //所以  第二行的3 4 5 6 位置有值的话，就会使得下一个图形不能正常摆放，遂  游戏结束
     checkGameOver() {
-        var gameOver = false
         for (var column = 3; column < 7; column++) {
             if (this.gameData[1][column] === 1) {
-                gameOver = true
+                this.gameOver = true
             }
         }
-        return gameOver
+        return this.gameOver
     }
 
     doNext(randomType, randomDir) {
@@ -174,9 +173,8 @@ export default class Game {
     }
 
     timerStart() {
-        this.isStop = false
         let timer = setInterval(()=>{
-            if (this.isStop) {
+            if (this.gameOver) {
                 clearInterval(timer)
             } else {
                 this.usedTime ++
@@ -186,7 +184,7 @@ export default class Game {
     }
 
     stopGame() {
-        this.isStop = true
+        this.gameOver = true
     }
 
     showResult(win, resultDivID, resultWrapID) {
@@ -200,17 +198,25 @@ export default class Game {
 
     /**
      * 添加底部干扰行
-     * @param {*生成干扰行的数量} lineNumber 
+     * @param {*干扰行的数据数组} jamLines 
      */
-    addBottomLines(lineNumber) {
+    addBottomLines(jamLines) {
+        let lineNumber = jamLines.length
+        for (var i = 0; i < lineNumber; i++) {//检查游戏区域前lineNumber行中是否有方块
+            if (this.gameData[i].includes(1) || this.gameData[i].includes(2)) {//有方块，则不能再从底部添加干扰行了，需要宣告游戏介绍
+                this.gameOver = true
+                return false
+            }
+        }
+
+        //如果以上检查  没有返回false，则继续以下处理，增加干扰行
         //首先整体向上移动n行,也就是把上边n行数据删除掉
         this.gameData.splice(0, lineNumber)
-        //产生n行干扰行数据
-        let jamLines = generateJamLines(lineNumber)
         //将n行干扰行数据添加在数据尾部
         this.gameData = this.gameData.concat(jamLines)
         //刷新界面
         this.refreshDivs(this.gameDivs, this.gameData)
+        return true
     }
 }
 
@@ -306,28 +312,4 @@ function setData(target_data, source, value) {
             }
         }
     }
-}
-
-function generateJamLines(num) {
-    let jamLinesArr = []
-    //产生num行干扰行，每行里至少要有一个方块的值为0
-    for (var row = 0; row < num; row++) {
-        //每一行都一个一个的生成方块，随机填充0 或者 1，如果某一行在填充第10个方块时，还没有0，则第十个填充为0
-        let hasZero = false 
-        let temLine = []
-        for (var column = 0; column < GAME_COLUMN-1; column++) {
-            let cellValue = Math.round(Math.random())
-            temLine[column] = cellValue
-            if (cellValue === 0) {
-                hasZero = true
-            }
-        }
-        if (hasZero) {
-            temLine.push(Math.round(Math.random()))
-        } else {
-            temLine.push(0)
-        }
-        jamLinesArr.push(temLine)
-    }
-    return jamLinesArr
 }

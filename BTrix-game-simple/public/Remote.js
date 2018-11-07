@@ -43,26 +43,29 @@ function bindCommandListener(socket, remote) {
     socket.on("next", (data)=>{//收到来自对方的next消息
         remote.remote_game.doNext(data.randomNextType,data.randomNextDir)
     })
-    socket.on("drop", (data)=>{//收到来自对方的next消息
+    socket.on("drop", (data)=>{//收到来自对方的drop消息
         remote.remote_game.drop()
     })
-    socket.on("left", (data)=>{//收到来自对方的next消息
+    socket.on("left", (data)=>{//收到来自对方的left消息
         remote.remote_game.left()
     })
-    socket.on("rotate", (data)=>{//收到来自对方的next消息
+    socket.on("rotate", (data)=>{//收到来自对方的rotate消息
         remote.remote_game.rotate()
     })
-    socket.on("right", (data)=>{//收到来自对方的next消息
+    socket.on("right", (data)=>{//收到来自对方的right消息
         remote.remote_game.right()
     })
-    socket.on("down", (data)=>{//收到来自对方的next消息
+    socket.on("down", (data)=>{//收到来自对方的down消息
         remote.remote_game.down()
     })
-    socket.on("fixed", (data)=>{//收到来自对方的next消息
+    socket.on("fixed", (data)=>{//收到来自对方的fixed消息
         remote.remote_game.fixed()
     })
-    socket.on("clearLines", (data)=>{//收到来自对方的next消息
+    socket.on("clearLines", (data)=>{//收到来自对方的clearLines消息
         remote.remote_game.clearLines()
         remote.remote_game.addScore(data)
+    })
+    socket.on("addBottomLines", (data)=>{//收到了对方已经自行增加干扰行的消息，并拿到对方的干扰行数据
+        remote.remote_game.addBottomLines(data)
     })
 }
